@@ -1,47 +1,39 @@
 'use strict';
 
-// prettier-ignore
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.memories');
-const inputType = document.querySelector('.form__input--type');
-const inputMemo = document.querySelector('.form__input--memo');
 // const inputDuration = document.querySelector('.form__input--duration');
-// const inputCadence = document.querySelector('.form__input--cadence');
-// const inputElevation = document.querySelector('.form__input--elevation');
 
 class Memory {
   date = new Date();
   id = new Date().getTime();
-  constructor(coords, memo) {
+  constructor(coords, memo, icon, type) {
     this.coords = coords; //[lat,lng]
     this.memo = memo;
+    this.icon = icon;
+    this.type = type;
+    this._setDescription();
+  }
+  _setDescription() {
+    // prettier-ignore
+    // const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    this.description = `${this.type[0].toUpperCase()}${this.type.slice(
+      1
+    )} Memory`;
   }
 }
 
-class Happy extends Memory {
-  constructor(coords, memo) {
-    super(coords, memo);
-  }
-}
-
-class Special extends Memory {
-  constructor(coords, memo) {
-    super(coords, memo);
-  }
-}
-
-// const memo1 = new Happy([39, -12], 'met some for the first time');
-// console.log(memo1);
 ///////////////////////////
 //Application Architecture
+const form = document.querySelector('.form');
+const containerWorkouts = document.querySelector('.memories');
+const inputType = document.querySelector('.form__input--type');
+const inputMemo = document.querySelector('.form__input--memo');
 
 class App {
   //private var
   #map;
   #mapEvent;
-
+  #memories = [];
   constructor() {
     this._getPosition();
 
@@ -63,7 +55,7 @@ class App {
   _loadMap(position) {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
-    console.log(`https://www.google.co.uk/maps/@${latitude}, ${longitude}`);
+    // console.log(`https://www.google.co.uk/maps/@${latitude}, ${longitude}`);
     const coords = [latitude, longitude];
 
     this.#map = L.map('map').setView(coords, 13);
@@ -74,7 +66,6 @@ class App {
     }).addTo(this.#map);
 
     //leaflet eventhandler
-
     this.#map.on('click', this._showForm.bind(this));
   }
 
@@ -83,6 +74,15 @@ class App {
     form.classList.remove('hidden');
     inputMemo.focus();
   }
+  _hideForm() {
+    //clear input field
+    inputMemo.value = '';
+    form.style.display = 'none';
+    form.classList.add('hidden');
+    setTimeout(() => {
+      form.style.display = 'grid';
+    }, 1000);
+  }
   _toggleIcon() {
     //TODO change to color of icon pink to orange
     console.log('change icon');
@@ -90,12 +90,32 @@ class App {
 
   _newMemo(e) {
     e.preventDefault();
-    console.log(this);
-    //clear input field
-    inputMemo.value = '';
-    //Display marker
+    //Get data from form
+    const type = inputType.value; //special or happy
+    const story = inputMemo.value;
     const { lat, lng } = this.#mapEvent.latlng;
-    L.marker([lat, lng])
+    let icon;
+    let memory;
+    //if special,create a special object
+    //if happy,create a happy object
+    type === 'special' ? (icon = 'pinkIcon') : (icon = 'orangeIcon');
+    //check if data is valid
+    if (story === '') {
+      return alert('please enter your story');
+    }
+    memory = new Memory([lat, lng], story, icon, type);
+    //add a new object to memory array
+    this.#memories.push(memory);
+    console.log(memory);
+    //render memory on map as a marker
+    this._renderMemoryMarker(memory);
+    //render memory on list
+    this._renderMemory(memory);
+    //hide form & clear input field
+    this._hideForm();
+  }
+  _renderMemoryMarker(memory) {
+    L.marker(memory.coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -103,12 +123,29 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: 'memo-popup',
+          className: `${memory.type}-popup`,
         })
       )
-      .setPopupContent('Momory')
+      .setPopupContent(memory.memo)
       .openPopup();
   }
+  _renderMemory(memory) {
+    const html = `
+    <li class="memory memory--${memory.type} " data-id="${memory.id}">
+      <h2 class="memory__title">
+      ${memory.description}
+      </h2>
+      <div class="memory__details">
+        <p class="memory__value">
+          ${memory.memo}
+        </p>
+      </div>  
+    </li>
+  `;
+
+    form.insertAdjacentHTML('afterend', html);
+  }
 }
+
 //actual house
 const app = new App();

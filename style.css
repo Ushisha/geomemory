@@ -50,9 +50,9 @@ a:visited {
 }
 
 .logo {
-  height: 5.2rem;
+  height: 5.5rem;
   align-self: center;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .memories {
@@ -62,59 +62,60 @@ a:visited {
   overflow-x: hidden;
 }
 
-.workouts::-webkit-scrollbar {
+.memories::-webkit-scrollbar {
   width: 0;
 }
 
-.workout {
-  background-color: var(--color-light--1);
+.memory {
+  background-color: var(--color-light--3);
+  color: var(--color-dark--2);
   border-radius: 5px;
   padding: 1.5rem 2.25rem;
   margin-bottom: 1.75rem;
   cursor: pointer;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 0.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
-.workout--running {
+.memory--special {
   border-left: 5px solid var(--color-brand--2);
 }
-.workout--cycling {
+.memory--happy {
   border-left: 5px solid var(--color-brand--1);
 }
 
-.workout__title {
+.memory__title {
   font-size: 1.7rem;
   font-weight: 600;
   grid-column: 1 / -1;
 }
 
-.workout__details {
+.memory__details {
   display: flex;
   align-items: baseline;
 }
 
-.workout__icon {
+/* .memory__icon {
   font-size: 1.8rem;
   margin-right: 0.2rem;
   height: 0.28rem;
-}
+} */
 
-.workout__value {
+.memory__value {
   font-size: 1.5rem;
   margin-right: 0.5rem;
 }
 
-.workout__unit {
+/* .memory__unit {
   font-size: 1.1rem;
   color: var(--color-light--1);
   text-transform: uppercase;
   font-weight: 800;
-}
+} */
 
 .form {
   background-color: var(--color-light--1);
+  color: white;
   border-radius: 5px;
   padding: 1.5rem 2.75rem;
   margin-bottom: 1.75rem;
@@ -215,6 +216,6 @@ a:visited {
 .special-popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color-brand--2);
 }
-.memo-popup .leaflet-popup-content-wrapper {
+.happy-popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color-brand--1);
 }

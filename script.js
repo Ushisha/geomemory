@@ -98,7 +98,7 @@ class App {
     let memory;
     //if special,create a special object
     //if happy,create a happy object
-    type === 'special' ? (icon = 'pinkIcon') : (icon = 'orangeIcon');
+    type === 'special' ? (icon = 'pink') : (icon = 'orange');
     //check if data is valid
     if (story === '') {
       return alert('please enter your story');
@@ -115,7 +115,21 @@ class App {
     this._hideForm();
   }
   _renderMemoryMarker(memory) {
-    L.marker(memory.coords)
+    console.log(memory.icon);
+    var iconType = L.icon({
+      iconUrl: `./images/icon-${memory.icon}.png`,
+      iconSize: [30, 45],
+      iconAnchor: [22, 94],
+      popupAnchor: [-7, -88],
+    });
+    // var orangeIcon = L.icon({
+    //   iconUrl: './images/icon-orange.png',
+    //   iconSize: [30, 45],
+    //   iconAnchor: [22, 94],
+    //   popupAnchor: [-7, -88],
+    // });
+
+    L.marker(memory.coords, { icon: iconType })
       .addTo(this.#map)
       .bindPopup(
         L.popup({

@@ -60,10 +60,19 @@ class App {
 
     this.#map = L.map('map').setView(coords, 13);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(this.#map);
+    L.tileLayer(
+      'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+      {
+        attribution:
+          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken:
+          'pk.eyJ1IjoiaWt1a28iLCJhIjoiY2tld3d6dWphMDN2eDJ0bGJpMWdrdzY0OCJ9.ngeS393DCFlzEHfFbuGoNw',
+      }
+    ).addTo(this.#map);
 
     //leaflet eventhandler
     this.#map.on('click', this._showForm.bind(this));
@@ -115,19 +124,12 @@ class App {
     this._hideForm();
   }
   _renderMemoryMarker(memory) {
-    console.log(memory.icon);
     var iconType = L.icon({
       iconUrl: `./images/icon-${memory.icon}.png`,
-      iconSize: [30, 45],
-      iconAnchor: [22, 94],
-      popupAnchor: [-7, -88],
+      iconSize: [50, 65],
+      iconAnchor: [25, 65],
+      popupAnchor: [0, -60],
     });
-    // var orangeIcon = L.icon({
-    //   iconUrl: './images/icon-orange.png',
-    //   iconSize: [30, 45],
-    //   iconAnchor: [22, 94],
-    //   popupAnchor: [-7, -88],
-    // });
 
     L.marker(memory.coords, { icon: iconType })
       .addTo(this.#map)
@@ -140,8 +142,8 @@ class App {
           className: `${memory.type}-popup`,
         })
       )
-      .setPopupContent(memory.memo)
-      .openPopup();
+      .setPopupContent(memory.memo);
+    // .openPopup();
   }
   _renderMemory(memory) {
     const html = `

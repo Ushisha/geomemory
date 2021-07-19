@@ -4,12 +4,14 @@
 
 class Memory {
   date = new Date();
-  id = new Date().getTime();
+  id = (Date.now() + '').slice(-10);
+
   constructor(coords, memo, icon, type) {
     this.coords = coords; //[lat,lng]
     this.memo = memo;
     this.icon = icon;
     this.type = type;
+
     this._setDescription();
   }
   _setDescription() {
@@ -25,21 +27,26 @@ class Memory {
 ///////////////////////////
 //Application Architecture
 const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.memories');
+const containerMemories = document.querySelector('.memories');
 const inputType = document.querySelector('.form__input--type');
 const inputMemo = document.querySelector('.form__input--memo');
 
 class App {
   //private var
   #map;
+  #mapZoomLevel = 13;
   #mapEvent;
   #memories = [];
+
   constructor() {
+    //Get users position
     this._getPosition();
-
+    //get data from local storage
+    this._getLocalStrage();
+    //attach eventhandlers
     form.addEventListener('submit', this._newMemo.bind(this));
-
     inputType.addEventListener('change', this._toggleIcon);
+    containerMemories.addEventListener('click', this._moveToPopup.bind(this));
   }
 
   _getPosition() {
@@ -58,7 +65,7 @@ class App {
     // console.log(`https://www.google.co.uk/maps/@${latitude}, ${longitude}`);
     const coords = [latitude, longitude];
 
-    this.#map = L.map('map').setView(coords, 13);
+    this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
 
     L.tileLayer(
       'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
@@ -69,13 +76,15 @@ class App {
         id: 'mapbox/streets-v11',
         tileSize: 512,
         zoomOffset: -1,
-        accessToken:
-          'pk.eyJ1IjoiaWt1a28iLCJhIjoiY2tld3d6dWphMDN2eDJ0bGJpMWdrdzY0OCJ9.ngeS393DCFlzEHfFbuGoNw',
+        accessToken: `{accessToken}`,
       }
     ).addTo(this.#map);
 
     //leaflet eventhandler
     this.#map.on('click', this._showForm.bind(this));
+    this.#memories.forEach(memo => {
+      this._renderMemoryMarker(memo);
+    });
   }
 
   _showForm(mapE) {
@@ -122,6 +131,8 @@ class App {
     this._renderMemory(memory);
     //hide form & clear input field
     this._hideForm();
+    //set local storage to all memories
+    this._setLocalStorage();
   }
   _renderMemoryMarker(memory) {
     var iconType = L.icon({
@@ -160,6 +171,37 @@ class App {
   `;
 
     form.insertAdjacentHTML('afterend', html);
+  }
+  _moveToPopup(e) {
+    if (!this.#map) return;
+    const memoryEl = e.target.closest('.memory');
+    if (!memoryEl) return;
+
+    const memory = this.#memories.find(memo => memo.id === memoryEl.dataset.id);
+
+    this.#map.flyTo(memory.coords, 13, {
+      animation: true,
+      pan: {
+        duration: 1,
+      },
+    });
+  }
+  _setLocalStorage() {
+    localStorage.setItem('memories', JSON.stringify(this.#memories));
+  }
+  _getLocalStrage() {
+    const data = JSON.parse(localStorage.getItem('memories'));
+
+    if (!data) return;
+
+    this.#memories = data;
+    this.#memories.forEach(memo => {
+      this._renderMemory(memo);
+    });
+  }
+  reset() {
+    localStorage.removeItem('memories');
+    location.reload();
   }
 }
 

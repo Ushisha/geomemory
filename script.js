@@ -6,21 +6,21 @@ class Memory {
   date = new Date();
   id = (Date.now() + '').slice(-10);
 
-  constructor(coords, memo, icon, type) {
+  constructor(coords, memo, icon, type, title) {
     this.coords = coords; //[lat,lng]
     this.memo = memo;
     this.icon = icon;
     this.type = type;
-
+    this.title = title;
     this._setDescription();
   }
   _setDescription() {
     // prettier-ignore
     // const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    this.description = `${this.type[0].toUpperCase()}${this.type.slice(
+    this.description = `${this.title[0].toUpperCase()}${this.title.slice(
       1
-    )} Memory`;
+    )}`;
   }
 }
 
@@ -30,7 +30,7 @@ const form = document.querySelector('.form');
 const containerMemories = document.querySelector('.memories');
 const inputType = document.querySelector('.form__input--type');
 const inputMemo = document.querySelector('.form__input--memo');
-
+const inputTitle = document.querySelector('.form__input--title');
 class App {
   //private var
   #map;
@@ -76,7 +76,8 @@ class App {
         id: 'mapbox/streets-v11',
         tileSize: 512,
         zoomOffset: -1,
-        accessToken: `{accessToken}`,
+        accessToken:
+          'pk.eyJ1IjoiaWt1a28iLCJhIjoiY2tyYWprZnd6MDJvNzJvcGVlb2dld3VmaSJ9.0DLefl9LAFUlPSgxR1vdyw',
       }
     ).addTo(this.#map);
 
@@ -90,11 +91,12 @@ class App {
   _showForm(mapE) {
     this.#mapEvent = mapE;
     form.classList.remove('hidden');
-    inputMemo.focus();
+    inputTitle.focus();
   }
   _hideForm() {
     //clear input field
     inputMemo.value = '';
+    inputTitle.value = '';
     form.style.display = 'none';
     form.classList.add('hidden');
     setTimeout(() => {
@@ -111,6 +113,7 @@ class App {
     //Get data from form
     const type = inputType.value; //special or happy
     const story = inputMemo.value;
+    const memoTitle = inputTitle.value;
     const { lat, lng } = this.#mapEvent.latlng;
     let icon;
     let memory;
@@ -118,10 +121,10 @@ class App {
     //if happy,create a happy object
     type === 'special' ? (icon = 'pink') : (icon = 'orange');
     //check if data is valid
-    if (story === '') {
-      return alert('please enter your story');
+    if (memoTitle === '' || story === '') {
+      return alert('please fill in all the fields');
     }
-    memory = new Memory([lat, lng], story, icon, type);
+    memory = new Memory([lat, lng], story, icon, type, memoTitle);
     //add a new object to memory array
     this.#memories.push(memory);
     console.log(memory);
@@ -153,7 +156,7 @@ class App {
           className: `${memory.type}-popup`,
         })
       )
-      .setPopupContent(memory.memo);
+      .setPopupContent(memory.title);
     // .openPopup();
   }
   _renderMemory(memory) {

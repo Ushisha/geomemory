@@ -121,7 +121,8 @@ a:visited {
   margin-bottom: 1.75rem;
 
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 0.5rem 2.5rem;
 
   /* Match height and activity boxes */
@@ -138,12 +139,16 @@ a:visited {
 }
 
 .form__row {
-  display: flex;
+  /* display: flex; */
+
   align-items: center;
 }
 
 .form__row--hidden {
   display: none;
+}
+.form__row:nth-child(3) {
+  grid-column: 1 / span 2;
 }
 
 .form__label {
@@ -167,7 +172,11 @@ a:visited {
   outline: none;
   background-color: #fff;
 }
-
+.form__input--memo {
+  margin: 0;
+  resize: none;
+  overflow: auto;
+}
 .form__btn {
   display: none;
 }

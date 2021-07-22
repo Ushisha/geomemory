@@ -33,6 +33,7 @@ const inputMemo = document.querySelector('.form__input--memo');
 const inputTitle = document.querySelector('.form__input--title');
 const clearAllBtn = document.querySelector('.clear-btn');
 const seeAllBtn = document.querySelector('.show-btn');
+
 let deleteBtns;
 let editBtns;
 
@@ -49,13 +50,12 @@ class App {
     //get data from local storage
     this._getLocalStrage();
     //attach eventhandlers
-    form.addEventListener('submit', this._newMemo.bind(this));
+    form.addEventListener('submit', this.submitFormHandler.bind(this));
     inputType.addEventListener('change', this._toggleIcon);
     containerMemories.addEventListener('click', this._moveToPopup.bind(this));
     clearAllBtn.addEventListener('click', this.reset);
     seeAllBtn.addEventListener('click', this.setZoomAndFit.bind(this));
   }
-
   _getPosition() {
     if (navigator.geolocation)
       navigator.geolocation.getCurrentPosition(
@@ -115,16 +115,16 @@ class App {
     //TODO change to color of icon pink to orange
     console.log('change icon');
   }
-
-  _newMemo(e) {
+  submitFormHandler(e) {
     e.preventDefault();
     //Get data from form
     const type = inputType.value; //special or happy
     const story = inputMemo.value;
     const memoTitle = inputTitle.value;
     const { lat, lng } = this.#mapEvent.latlng;
+    const coords = [lat, lng];
     let icon;
-    let memory;
+
     //if special,create a special object
     //if happy,create a happy object
     type === 'special' ? (icon = 'pink') : (icon = 'orange');
@@ -133,7 +133,28 @@ class App {
       return alert('please fill in all the fields');
     }
 
-    memory = new Memory([lat, lng], story, icon, type, memoTitle);
+    console.log(type, story, memoTitle, coords, icon);
+    this._newMemo(coords, story, icon, type, memoTitle);
+  }
+
+  _newMemo(coords, story, icon, type, title) {
+    // e.preventDefault();
+    // //Get data from form
+    // const type = inputType.value; //special or happy
+    // const story = inputMemo.value;
+    // const memoTitle = inputTitle.value;
+    // const { lat, lng } = this.#mapEvent.latlng;
+    // let icon;
+    // let memory;
+    // //if special,create a special object
+    // //if happy,create a happy object
+    // type === 'special' ? (icon = 'pink') : (icon = 'orange');
+    // //check if data is valid
+    // if (memoTitle === '' || story === '') {
+    //   return alert('please fill in all the fields');
+    // }
+
+    let memory = new Memory(coords, story, icon, type, title);
 
     //add a new object to memory array
     this.#memories.push(memory);
@@ -166,8 +187,8 @@ class App {
           className: `${memory.type}-popup`,
         })
       )
-      .setPopupContent(memory.title);
-    // .openPopup();
+      .setPopupContent(memory.description)
+      .openPopup();
   }
   _renderMemory(memory) {
     const html = `
@@ -201,7 +222,7 @@ class App {
     editBtns = document
       .querySelectorAll('.edit-btn')
       .forEach(btn =>
-        btn.addEventListener('click', this.editMemory.bind(this))
+        btn.addEventListener('click', this.editBtnHander.bind(this))
       );
   }
 
@@ -236,6 +257,11 @@ class App {
   }
 
   reset() {
+    if (confirm('Are you sure you want to clear all the logs?')) {
+      console.log('All the logs hav been cleared!');
+    } else {
+      return;
+    }
     localStorage.removeItem('memories');
     location.reload();
   }
@@ -250,25 +276,41 @@ class App {
     this._setLocalStorage();
     location.reload();
   }
-
-  editMemory(e) {
+  editBtnHander(e) {
     const memoryEl = e.target.closest('.memory');
     if (!memoryEl) return;
-    const editMemory = this.#memories.find(
+    //get edit object index
+    const editIndex = this.#memories.findIndex(
       memo => memo.id === memoryEl.dataset.id
     );
+    const data = JSON.parse(localStorage.getItem('memories'));
+    console.log(data);
+    this.editMemory(editIndex);
+    // const editMemory = this.#memories.find(
+    //   memo => memo.id === memoryEl.dataset.id
+    // );
+  }
+
+  editMemory(index) {
+    // const memoryEl = e.target.closest('.memory');
+    // if (!memoryEl) return;
+    // const editMemory = this.#memories.find(
+    //   memo => memo.id === memoryEl.dataset.id
+    // );
+    const memory = this.#memories[index];
     const objCoords = {
       latlng: {
-        lat: editMemory.coords[0],
-        lng: editMemory.coords[1],
+        lat: memory.coords[0],
+        lng: memory.coords[1],
       },
     };
-    inputMemo.value = editMemory.memo;
-    inputTitle.value = editMemory.title;
-    inputType.value = editMemory.type;
+    inputMemo.value = memory.memo;
+    inputTitle.value = memory.title;
+    inputType.value = memory.type;
 
     this._showForm(objCoords);
   }
+
   setZoomAndFit() {
     console.log(this.#memories);
     if (this.#memories.length === 1)

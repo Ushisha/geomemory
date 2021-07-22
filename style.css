@@ -2,11 +2,15 @@
   --color-brand--1: #ffb545;
   --color-brand--2: #e75fc5;
 
-  --color-dark--1: #004643;
-  --color-dark--2: #42484d;
+  --color-dark--1: #01a08f;
+  --color-dark--2: #050505;
+  --color-dark--3: #335c61;
   --color-light--1: #abd1c6;
-  --color-light--2: #ececec;
+  --color-light--2: #eeeeee;
   --color-light--3: rgb(250, 254, 255);
+  --color-light--cool: #237dac;
+  --color-light--green: #9ec595;
+  --color-earth: #fad9bd;
 }
 
 * {
@@ -49,10 +53,53 @@ a:visited {
   flex-direction: column;
 }
 
+.header {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
 .logo {
   height: 5.5rem;
   align-self: center;
+
   margin-bottom: 2rem;
+}
+.clear-btn-container {
+  position: absolute;
+  right: 20px;
+}
+.btn {
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+  border: none;
+}
+
+.clear-btn,
+.show-btn {
+  color: var(--color-light--2);
+  background-color: var(--color-dark--1);
+}
+.edit-btn,
+.delete-btn {
+  background-color: white;
+  position: absolute;
+  right: 15px;
+}
+.edit-btn {
+  right: 30px;
+}
+.edit-icon {
+  width: 15px;
+  height: 15px;
+}
+.delete-btn {
+  width: 15px;
+  height: 15px;
+  font-size: 2em;
+  color: var(--color-dark--2);
+  top: 9px;
+  right: 8px;
 }
 
 .memories {
@@ -73,7 +120,7 @@ a:visited {
   padding: 1.5rem 2.25rem;
   margin-bottom: 1.75rem;
   cursor: pointer;
-
+  position: relative;
   display: flex;
   flex-direction: column;
 }

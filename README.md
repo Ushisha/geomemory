@@ -24,3 +24,9 @@ alert('could not get your position');
 ## Acknowledgement
 
 This project is based on [Jonas Schmedtmann](https://github.com/jonasschmedtmann)'s Mapty project.
+
+<a href="https://icons8.com/icon/86373/edit">Edit icon by Icons8</a>
+
+<div>Icons made by <a href="https://www.flaticon.com/authors/bqlqn" title="bqlqn">bqlqn</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+<div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/bqlqn" title="bqlqn">bqlqn</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

@@ -31,6 +31,11 @@ const containerMemories = document.querySelector('.memories');
 const inputType = document.querySelector('.form__input--type');
 const inputMemo = document.querySelector('.form__input--memo');
 const inputTitle = document.querySelector('.form__input--title');
+const clearAllBtn = document.querySelector('.clear-btn');
+const seeAllBtn = document.querySelector('.show-btn');
+let deleteBtns;
+let editBtns;
+
 class App {
   //private var
   #map;
@@ -47,6 +52,8 @@ class App {
     form.addEventListener('submit', this._newMemo.bind(this));
     inputType.addEventListener('change', this._toggleIcon);
     containerMemories.addEventListener('click', this._moveToPopup.bind(this));
+    clearAllBtn.addEventListener('click', this.reset);
+    seeAllBtn.addEventListener('click', this.setZoomAndFit.bind(this));
   }
 
   _getPosition() {
@@ -90,6 +97,7 @@ class App {
 
   _showForm(mapE) {
     this.#mapEvent = mapE;
+
     form.classList.remove('hidden');
     inputTitle.focus();
   }
@@ -124,10 +132,12 @@ class App {
     if (memoTitle === '' || story === '') {
       return alert('please fill in all the fields');
     }
+
     memory = new Memory([lat, lng], story, icon, type, memoTitle);
+
     //add a new object to memory array
     this.#memories.push(memory);
-    console.log(memory);
+
     //render memory on map as a marker
     this._renderMemoryMarker(memory);
     //render memory on list
@@ -169,12 +179,32 @@ class App {
         <p class="memory__value">
           ${memory.memo}
         </p>
-      </div>  
+      </div> 
+ 
+        <button class ="btn edit-btn">
+          <img class="edit-icon" src="./images/edit.svg"/>
+        </button>
+        <button class="btn delete-btn">
+         &times
+        </button>    
+     
     </li>
+    
   `;
 
     form.insertAdjacentHTML('afterend', html);
+    deleteBtns = document
+      .querySelectorAll('.delete-btn')
+      .forEach(btn =>
+        btn.addEventListener('click', this.deleteMemory.bind(this))
+      );
+    editBtns = document
+      .querySelectorAll('.edit-btn')
+      .forEach(btn =>
+        btn.addEventListener('click', this.editMemory.bind(this))
+      );
   }
+
   _moveToPopup(e) {
     if (!this.#map) return;
     const memoryEl = e.target.closest('.memory');
@@ -189,9 +219,11 @@ class App {
       },
     });
   }
+
   _setLocalStorage() {
     localStorage.setItem('memories', JSON.stringify(this.#memories));
   }
+
   _getLocalStrage() {
     const data = JSON.parse(localStorage.getItem('memories'));
 
@@ -202,9 +234,49 @@ class App {
       this._renderMemory(memo);
     });
   }
+
   reset() {
     localStorage.removeItem('memories');
     location.reload();
+  }
+
+  deleteMemory(e) {
+    const memoryEl = e.target.closest('.memory');
+
+    const updatedMemories = this.#memories.filter(
+      memo => memo.id !== memoryEl.dataset.id
+    );
+    this.#memories = updatedMemories;
+    this._setLocalStorage();
+    location.reload();
+  }
+
+  editMemory(e) {
+    const memoryEl = e.target.closest('.memory');
+    if (!memoryEl) return;
+    const editMemory = this.#memories.find(
+      memo => memo.id === memoryEl.dataset.id
+    );
+    const objCoords = {
+      latlng: {
+        lat: editMemory.coords[0],
+        lng: editMemory.coords[1],
+      },
+    };
+    inputMemo.value = editMemory.memo;
+    inputTitle.value = editMemory.title;
+    inputType.value = editMemory.type;
+
+    this._showForm(objCoords);
+  }
+  setZoomAndFit() {
+    console.log(this.#memories);
+    if (this.#memories.length === 1)
+      return this.setViewToPopup(this.#memories[0]);
+
+    const allCoords = this.#memories.map(memory => memory.coords);
+    console.log(allCoords);
+    this.#map.fitBounds(allCoords, { padding: [10, 10] });
   }
 }
 

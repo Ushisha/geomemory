@@ -1,18 +1,26 @@
 # GeoMemory
 
-This is a project using Leflet interactive map.
-to visualize your memories by logging your memory on a map like planting a flower.
+This is a project using Leflet interactive map to visualize your memories by logging on a map like planting flowers.
 
-### Screenshot
+## Screenshot
 
-![](.images/screenshot1.png)
+![](images/screenshot1.png)
 
-## process
+## functionalities
 
 - Responsive web design
-- Abilities to edit & delete a log and delete all.
+- Abilities to edit & delete a log and delete all loggings.
 - Position the map to show all makers.
-- Click on popup, move map to corresponding popup
+- Click on a log, move map to a corresponding popup
+
+## Built with
+
+- Semantic HTML5 markup
+- CSS custom properties
+- Vanilla Javascript
+- Flexbox
+- responsible Web design
+- [Leaflet](https://leafletjs.com/) - JavaScript library
 
 ```JS
  if (navigator.geolocation) navigator.geolocation.getCurrentPosition( function (position) { const { latitude } = position.coords; const { longitude } = position.coords;
@@ -23,14 +31,6 @@ alert('could not get your position');
 }
 );
 ```
-
-## Built with
-
-- Semantic HTML5 markup
-- CSS custom properties
-- Flexbox
-- responsible Web design
-- [Leaflet](https://leafletjs.com/) - JavaScript library
 
 ## Acknowledgement
 

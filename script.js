@@ -1,7 +1,5 @@
 'use strict';
 
-// const inputDuration = document.querySelector('.form__input--duration');
-
 class Memory {
   date = new Date();
   id = (Date.now() + '').slice(-10);
@@ -12,15 +10,11 @@ class Memory {
     this.icon = icon;
     this.type = type;
     this.title = title;
+
     this._setDescription();
   }
   _setDescription() {
-    // prettier-ignore
-    // const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-    this.description = `${this.title[0].toUpperCase()}${this.title.slice(
-      1
-    )}`;
+    this.description = `${this.title[0].toUpperCase()}${this.title.slice(1)}`;
   }
 }
 
@@ -43,7 +37,6 @@ class App {
   #mapZoomLevel = 13;
   #mapEvent;
   #memories = [];
-
   constructor() {
     //Get users position
     this._getPosition();
@@ -51,11 +44,11 @@ class App {
     this._getLocalStrage();
     //attach eventhandlers
     form.addEventListener('submit', this.submitFormHandler.bind(this));
-    inputType.addEventListener('change', this._toggleIcon);
     containerMemories.addEventListener('click', this._moveToPopup.bind(this));
     clearAllBtn.addEventListener('click', this.reset);
     seeAllBtn.addEventListener('click', this.setZoomAndFit.bind(this));
   }
+
   _getPosition() {
     if (navigator.geolocation)
       navigator.geolocation.getCurrentPosition(
@@ -101,6 +94,7 @@ class App {
     form.classList.remove('hidden');
     inputTitle.focus();
   }
+
   _hideForm() {
     //clear input field
     inputMemo.value = '';
@@ -111,30 +105,28 @@ class App {
       form.style.display = 'grid';
     }, 1000);
   }
-  _toggleIcon() {
-    //TODO change to color of icon pink to orange
-    console.log('change icon');
-  }
+
   submitFormHandler(e) {
     e.preventDefault();
     //Get data from form
+
     const type = inputType.value; //special or happy
     const story = inputMemo.value;
-    const memoTitle = inputTitle.value;
+    const title = inputTitle.value;
     const { lat, lng } = this.#mapEvent.latlng;
     const coords = [lat, lng];
+
     let icon;
 
     //if special,create a special object
     //if happy,create a happy object
     type === 'special' ? (icon = 'pink') : (icon = 'orange');
     //check if data is valid
-    if (memoTitle === '' || story === '') {
+    if (title === '' || story === '') {
       return alert('please fill in all the fields');
     }
 
-    console.log(type, story, memoTitle, coords, icon);
-    this._newMemo(coords, story, icon, type, memoTitle);
+    this._newMemo(coords, story, icon, type, title);
   }
 
   _newMemo(coords, story, icon, type, title) {
@@ -142,15 +134,15 @@ class App {
     // //Get data from form
     // const type = inputType.value; //special or happy
     // const story = inputMemo.value;
-    // const memoTitle = inputTitle.value;
-    // const { lat, lng } = this.#mapEvent.latlng;
+    // const title = inputTitle.value;
+    // const { lat, lng } = this.mapEvent.latlng;
     // let icon;
     // let memory;
     // //if special,create a special object
     // //if happy,create a happy object
     // type === 'special' ? (icon = 'pink') : (icon = 'orange');
     // //check if data is valid
-    // if (memoTitle === '' || story === '') {
+    // if (title === '' || story === '') {
     //   return alert('please fill in all the fields');
     // }
 
@@ -222,7 +214,7 @@ class App {
     editBtns = document
       .querySelectorAll('.edit-btn')
       .forEach(btn =>
-        btn.addEventListener('click', this.editBtnHander.bind(this))
+        btn.addEventListener('click', this.editMemory.bind(this))
       );
   }
 
@@ -276,27 +268,13 @@ class App {
     this._setLocalStorage();
     location.reload();
   }
-  editBtnHander(e) {
+
+  editMemory(e) {
     const memoryEl = e.target.closest('.memory');
     if (!memoryEl) return;
-    //get edit object index
-    const editIndex = this.#memories.findIndex(
+    const index = this.#memories.findIndex(
       memo => memo.id === memoryEl.dataset.id
     );
-    const data = JSON.parse(localStorage.getItem('memories'));
-    console.log(data);
-    this.editMemory(editIndex);
-    // const editMemory = this.#memories.find(
-    //   memo => memo.id === memoryEl.dataset.id
-    // );
-  }
-
-  editMemory(index) {
-    // const memoryEl = e.target.closest('.memory');
-    // if (!memoryEl) return;
-    // const editMemory = this.#memories.find(
-    //   memo => memo.id === memoryEl.dataset.id
-    // );
     const memory = this.#memories[index];
     const objCoords = {
       latlng: {

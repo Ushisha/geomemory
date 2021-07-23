@@ -1,20 +1,14 @@
 :root {
   --color-brand--1: #ffb545;
   --color-brand--2: #e75fc5;
-
+  --color-brand--3: rgba(49, 129, 18, 0.781);
   --color-dark--1: #75f096;
   --color-dark--2: #3b3939;
   --color-dark--3: #335c61;
   --color-light--1: #abd1c6;
   --color-light--2: #eeeeee;
   --color-light--3: rgb(250, 254, 255);
-  --color-light--cool: #99d5fa;
-  --color-light--green: #9ec595;
-  --color-earth: #fad9bd;
-
-  --color-dark-purple: rgb(228, 235, 222);
-
-  --color--yellow-green: rgba(49, 129, 18, 0.781);
+  --color-rest--btn: rgb(228, 235, 222);
 }
 
 * {
@@ -51,10 +45,11 @@ a:visited {
 /* SIDEBAR */
 .sidebar {
   flex-basis: 50rem;
-  background-color: var(--color--yellow-green);
+  background-color: var(--color-brand--3);
   padding: 3rem 5rem 4rem 5rem;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
 }
 
 .header {
@@ -80,7 +75,7 @@ a:visited {
 }
 
 .clear-btn {
-  color: var(--color-dark-purple);
+  color: var(--color-rest--btn);
   background-color: transparent;
 }
 .clear-btn:hover,
@@ -96,6 +91,11 @@ a:visited {
 }
 .showall-logo {
   height: 50px;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 1em;
 }
 
 .edit-btn,
@@ -205,7 +205,6 @@ a:visited {
 
 .form__row {
   /* display: flex; */
-
   align-items: center;
 }
 
@@ -295,12 +294,17 @@ a:visited {
 .happy-popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color-brand--1);
 }
+
 @media (max-width: 800px) {
   body {
     flex-direction: column;
-    /* overscroll-behavior-y: ; */
   }
   .sidebar {
-    max-height: 50%;
+    max-height: 50vh;
+  }
+  .intro {
+    text-align: center;
+    margin-bottom: 0.5em;
+    font-size: 10px;
   }
 }

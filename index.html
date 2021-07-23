@@ -25,7 +25,7 @@
       crossorigin=""
     ></script>
     <script defer src="script.js"></script>
-    <title>GeoMemory / map your memories</title>
+    <title>GeoMemory / Map your memories</title>
   </head>
   <body>
     <div class="sidebar">
@@ -44,33 +44,57 @@
           </button>
         </div>
       </header>
+      <main>
+        <h3 class="intro">Click a memorable location on the map to start planting your memories!</h3>
+        
+        <ul class="memories">
+          <form class="form hidden">
+            <div class="form__row">
+              <!-- <label class="form__label">Type</label> -->
+              <select class="form__input form__input--type">
+                <option value="special">Special</option>
+                <option value="happy">Happy</option>
+              </select>
+            </div>
+            <div class="form__row">
+              <input
+                type="text"
+                class="form__input form__input--title"
+                placeholder="Title"
+                name ="title"
+              />
+            </div>
+            <!-- <label for="file" style="cursor: pointer">upload image</label>
+            <div class="form__row">
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                name="image"
+                id="file"
+                class="form__input form__input--image"
+                style="display: none"
+              />
+              <img id="output" width="200" />
+            </div> -->
+  
+            <div class="form__row">
+              <!-- <label class="form__label">Memory</label> -->
+              <input
+                type="text"
+                class="form__input form__input--memo"
+                placeholder="Plant your memory here & press 'Enter'"
+                name ="description"
+              />
+            </div>
+  
+            <button class="form__btn">OK</button>
+          </form>
+        </ul>
+      </div>
+  
+      <div id="map"></div>
+      </main>
 
-      <ul class="memories">
-        <form class="form hidden">
-          <div class="form__row">
-            <!-- <label class="form__label">Type</label> -->
-            <select class="form__input form__input--type">
-              <option value="special">Special Memory</option>
-              <option value="happy">Happy Memory</option>
-            </select>
-          </div>
-          <div class="form__row">
-            <!-- <label class="form__label">Title</label> -->
-            <input class="form__input form__input--title" placeholder="Title" />
-          </div>
-          <div class="form__row">
-            <!-- <label class="form__label">Memory</label> -->
-            <input
-              class="form__input form__input--memo"
-              placeholder="seed your memory here"
-            />
-          </div>
-
-          <button class="form__btn">OK</button>
-        </form>
-      </ul>
-    </div>
-
-    <div id="map"></div>
+      
   </body>
 </html>

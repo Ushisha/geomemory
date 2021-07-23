@@ -6,7 +6,7 @@ This is a project using Leflet interactive map to visualize your memories by log
 
 ![](images/screenshot1.png)
 
-## functionalities
+## Functionalities
 
 - Responsive web design
 - Abilities to edit & delete a log and delete all loggings.

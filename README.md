@@ -19,7 +19,7 @@ This is a project using Leflet interactive map to visualize your memories by log
 - CSS custom properties
 - Vanilla Javascript
 - Flexbox
-- responsible Web design
+- Responsive Web Design
 - [Leaflet](https://leafletjs.com/) - JavaScript library
 
 ```JS

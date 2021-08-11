@@ -136,22 +136,6 @@ class App {
   }
 
   _newMemo(coords, story, icon, type, title) {
-    // e.preventDefault();
-    // //Get data from form
-    // const type = inputType.value; //special or happy
-    // const story = inputMemo.value;
-    // const title = inputTitle.value;
-    // const { lat, lng } = this.mapEvent.latlng;
-    // let icon;
-    // let memory;
-    // //if special,create a special object
-    // //if happy,create a happy object
-    // type === 'special' ? (icon = 'pink') : (icon = 'orange');
-    // //check if data is valid
-    // if (title === '' || story === '') {
-    //   return alert('please fill in all the fields');
-    // }
-
     let memory = new Memory(coords, story, icon, type, title);
 
     //add a new object to memory array
@@ -306,5 +290,4 @@ class App {
   }
 }
 
-//actual house
 const app = new App();

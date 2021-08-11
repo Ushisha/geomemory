@@ -1,11 +1,11 @@
 :root {
   --color-brand--1: #ffb545;
   --color-brand--2: #e75fc5;
-  --color-brand--3: rgba(49, 129, 18, 0.781);
+  --color-brand--3: rgba(179, 178, 174, 0.781);
   --color-dark--1: #75f096;
   --color-dark--2: #3b3939;
   --color-dark--3: #335c61;
-  --color-light--1: #abd1c6;
+  --color-light--1: #e3e4de;
   --color-light--2: #eeeeee;
   --color-light--3: rgb(250, 254, 255);
   --color-rest--btn: rgb(228, 235, 222);
@@ -60,12 +60,16 @@ a:visited {
 .logo {
   height: 5.5rem;
   align-self: center;
-
   margin-bottom: 2rem;
 }
 .clear-btn-container {
   position: absolute;
   right: 20px;
+}
+.show-btn-container {
+  position: absolute;
+  left: 8px;
+  top: 5px;
 }
 .btn {
   cursor: pointer;
@@ -74,7 +78,8 @@ a:visited {
   border: none;
 }
 
-.clear-btn {
+.clear-btn,
+.show-btn {
   color: var(--color-rest--btn);
   background-color: transparent;
 }
@@ -85,12 +90,6 @@ a:visited {
 .show-btn {
   position: absolute;
   z-index: 1000;
-  background-color: transparent;
-  top: 15px;
-  right: 9px;
-}
-.showall-logo {
-  height: 50px;
 }
 
 .intro {

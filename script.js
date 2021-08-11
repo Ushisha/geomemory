@@ -126,6 +126,12 @@ class App {
       return alert('please fill in all the fields');
     }
 
+    const updatedMemories = this.#memories
+      .map(memo => (memo.coords.join() !== coords.join() ? memo : null))
+      .filter(item => item !== null);
+    this.#memories = updatedMemories;
+    this._setLocalStorage();
+    location.reload();
     this._newMemo(coords, story, icon, type, title);
   }
 

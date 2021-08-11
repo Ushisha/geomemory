@@ -4,12 +4,12 @@ This is a project using Leflet interactive map to visualize your memories by log
 
 ## Screenshot
 
-![](images/screenshot1.png)
+![](images/screenshot.png)
 
 ## Functionalities
 
 - Responsive web design
-- Abilities to edit & delete a log and delete all loggings.
+- Abilities to edit & delete a log and clear all loggings.
 - Position the map to show all makers.
 - Click on a log, move map to a corresponding popup
 

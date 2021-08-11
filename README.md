@@ -6,6 +6,10 @@ This is a project using Leflet interactive map to visualize your memories by log
 
 ![](images/screenshot.png)
 
+### Links
+
+- Live Site URL: [https://geomemory-usisha.netlify.app/](https://geomemory-usisha.netlify.app/)
+
 ## Functionalities
 
 - Responsive web design

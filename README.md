@@ -1,6 +1,6 @@
 # GeoMemory
 
-This is a project using Leflet interactive map to visualize your memories by logging on a map like planting flowers.
+This project built with vanila Javascript uses Leaflet interactive map to visualize your memories by logging on a map like planting flowers.
 
 ## Screenshot
 
